@@ -1,0 +1,38 @@
+{# templates/figure/show.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la Figure{% endblock %}
+
+{% block body %}
+    <div class="main-content">
+        <h1>{{ figure.nom }}</h1>
+        <p>{{ figure.description }}</p>
+        <p><strong>Catégorie:</strong> {{ figure.categories }}</p>
+
+        <h2>Commentaires</h2>
+
+        {% for comment in figure.comments %}
+            <div class="comment">
+                <p><strong>{{ comment.author }}</strong> - {{ comment.createdAt|date('d/m/Y H:i') }}</p>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% else %}
+            <p>Il n'y a pas encore de commentaires.</p>
+        {% endfor %}
+
+        {# Afficher le formulaire de commentaire seulement si l'utilisateur est connecté #}
+        {% if app.user %}
+            <h2>Ajouter un commentaire</h2>
+            {{ form_start(commentForm) }}
+                {{ form_row(commentForm.content) }} {# On affiche uniquement le champ de contenu #}
+                <button class="btn">Envoyer</button>
+            {{ form_end(commentForm) }}
+        {% else %}
+            <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.</p>
+        {% endif %}
+
+        <a href="{{ path('figure_index') }}" class="button">Retour à la liste des figures</a>
+        <a href="{{ path('figure_edit', {'id': figure.id}) }}" class="button">Modifier la Figure</a>
+    </div>
+{% endblock %}

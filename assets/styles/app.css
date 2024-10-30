@@ -1,3 +1,207 @@
+/* public/css/style.css */
+
+/* Global Styles */
 body {
-    background-color: skyblue;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header Styles */
+.header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.header__title {
+    margin: 0;
+}
+
+/* Container Styles */
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Button Styles */
+.button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    
+}
+
+.button:hover {
+    background: #0056b3;
+    text-decoration: none;
+}
+
+/* Form Styles */
+.form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form__input,
+.form__textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form__textarea {
+    resize: vertical;
+}
+
+/* List Styles */
+.figure-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.figure-list__item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.figure-list__item:last-child {
+    border-bottom: none;
+}
+
+/* Main Content Styles */
+.main-content {
+    padding: 20px 0;
+}
+
+/* Footer Styles */
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer__text {
+    margin: 0;
+}
+
+/* LOGIN */
+
+/* Login Page Styles */
+.login-container {
+    max-width: 400px; /* Largeur maximale pour le formulaire */
+    margin: 50px auto; /* Centre le conteneur dans la page */
+    padding: 20px; /* Espacement intérieur */
+    background: #fff; /* Fond blanc pour le formulaire */
+    border-radius: 5px; /* Coins arrondis */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+.login-container h1 {
+    text-align: center; /* Centre le titre */
+    margin-bottom: 20px; /* Espacement en bas du titre */
+}
+
+.login-container .form__label {
+    margin-bottom: 5px; /* Espacement en bas des labels */
+}
+
+.login-container .form__input {
+    margin-bottom: 20px; /* Espacement en bas des champs */
+}
+
+.login-container .error-message {
+    color: #ff4d4d; /* Couleur rouge pour les messages d'erreur */
+    margin-top: 10px; /* Espacement au-dessus du message d'erreur */
+    text-align: center; /* Centre le message d'erreur */
+}
+
+/* Edit Page Styles */
+.edit-container {
+    max-width: 600px; /* Largeur maximale pour l'édition */
+    margin: 50px auto; /* Centre le conteneur */
+    padding: 20px; /* Espacement intérieur */
+    background: #fff; /* Fond blanc */
+    border-radius: 5px; /* Coins arrondis */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+.edit-container h1 {
+    text-align: center; /* Centre le titre */
+    margin-bottom: 20px; /* Espacement en bas */
+}
+
+.button-secondary {
+    background: #6c757d; /* Couleur grise pour le bouton secondaire */
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 20px; /* Espacement en haut pour séparer du formulaire */
+    text-decoration: none;
+}
+
+.button-secondary:hover {
+    background: #5a6268; /* Assombrissement au survol */
+    text-decoration: none;
+}
+
+/* Dropdown Styles */
+.form__select {
+    width: 100%; /* Largeur totale pour s'aligner avec les autres champs */
+    padding: 10px; /* Espacement intérieur */
+    margin-bottom: 20px; /* Espacement en bas pour cohérence avec les autres champs */
+    border: 1px solid #ccc; /* Bordure grise pour correspondre aux champs de texte */
+    border-radius: 5px; /* Coins arrondis pour un look uniforme */
+    font-size: 16px; /* Taille de police */
+    background-color: #fff; /* Fond blanc */
+    cursor: pointer; /* Curseur de pointeur pour indiquer la sélection */
+}
+
+.form__select:focus {
+    border-color: #007bff; /* Bordure bleue lors du focus */
+    outline: none; /* Supprime la bordure par défaut du focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Ombre légère */
+}
+
+.header__title a {
+    color:white !important;
+    text-decoration: none;
 }

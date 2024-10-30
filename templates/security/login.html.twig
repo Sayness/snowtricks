@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="login-container">
+        <h1>Connexion</h1>
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            {{ form_row(form._username) }}
+            {{ form_row(form._password) }}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button type="submit" class="button">Se connecter</button>
+        {{ form_end(form) }}
+
+        {% if error %}
+            <div class="error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <p class="register-link">Pas de compte ? <a href="{{ path('app_register') }}">S'inscrire ici</a></p>
+    </div>
+{% endblock %}

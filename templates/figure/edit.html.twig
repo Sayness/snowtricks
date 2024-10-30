@@ -1,0 +1,18 @@
+{# templates/figure/edit.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la Figure{% endblock %}
+
+{% block body %}
+    <div class="edit-container">
+        <h1>Modifier la Figure : {{ figure.nom }}</h1>
+        
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="button">Modifier</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('figure_index') }}" class="button button-secondary">Retour à la liste des figures</a>
+    </div>
+{% endblock %}

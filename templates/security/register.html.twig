@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="login-container">
+    <h1>Inscription</h1>
+    {{ form_start(form, {'attr': {'class': 'form'}}) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="button">S'inscrire</button>
+    {{ form_end(form) }}
+    <p class="register-link">Vous avez un compte ? <a href="{{ path('app_login') }}">Connectez-vous</a></p>
+</div>
+{% endblock %}

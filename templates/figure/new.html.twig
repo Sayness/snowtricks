@@ -1,0 +1,24 @@
+{# templates/figure/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une Nouvelle Figure{% endblock %}
+
+{% block body %}
+    <div class="main-content">
+        <h1>Créer une Nouvelle Figure</h1>
+        
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            {{ form_label(form.nom, null, {'label_attr': {'class': 'form__label'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form__input'}}) }}
+            
+            {{ form_label(form.description, null, {'label_attr': {'class': 'form__label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form__textarea'}}) }}
+            
+            {{ form_label(form.categories, null, {'label_attr': {'class': 'form__label'}}) }}
+            {{ form_widget(form.categories, {'attr': {'class': 'form__input'}}) }}
+            
+            <button type="submit" class="button">Créer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

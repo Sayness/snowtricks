@@ -1,0 +1,29 @@
+{# templates/figure/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Figures{% endblock %}
+
+{% block body %}
+    <div class="main-content">
+        <h1>Liste des Figures</h1>
+        
+        <ul class="figure-list">
+        {% for figure in figures %}
+            <li class="figure-list__item">
+                <a href="{{ path('figure_show', { 'id': figure.id }) }}">
+                    {{ figure.nom }}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+
+        {% if app.user %}
+            <a href="{{ path('figure_new') }}" class="button">Créer une nouvelle figure</a>
+            <a href="{{ path('app_logout') }}" class="button button-secondary">Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="button">Connexion</a>
+            <a href="{{ path('app_register') }}" class="button button-secondary">Créer un compte</a>
+        {% endif %}
+    </div>
+{% endblock %}
