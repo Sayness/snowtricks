@@ -32,7 +32,6 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/new', name: 'figure_new')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')] 
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $figure = new Figure();
@@ -105,7 +104,6 @@ class FigureController extends AbstractController
     }
 
     #[Route('/figure/{id}/edit', name: 'figure_edit')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')] 
     public function edit(Request $request, Figure $figure, FigureRepository $figureRepository): Response
     {
         $form = $this->createForm(FigureType::class, $figure);
