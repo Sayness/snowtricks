@@ -2,28 +2,40 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Figures{% endblock %}
+{% block title %}Home - SnowTricks{% endblock %}
 
 {% block body %}
-    <div class="main-content">
-        <h1>Liste des Figures</h1>
+    {# Hero section with background image and phrase accroche #}
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-text">Phrase accroche</h1>
+        </div>
+        <a href="#tricks-section" class="scroll-button">&#8595;</a>
+    </section>
+
+    {# Tricks section - anchor for the scroll #}
+    <section id="tricks-section" class="main-content">
+        <h1>Explore Snowboarding Tricks</h1>
         
+        {# Displaying list of figures with additional structure for improved layout #}
         <ul class="figure-list">
-        {% for figure in figures %}
-            <li class="figure-list__item">
-                <a href="{{ path('figure_show', { 'id': figure.id }) }}">
-                    {{ figure.nom }}
-                </a>
-            </li>
-        {% endfor %}
+            {% for figure in figures %}
+                <li class="figure-list__item">
+                    <a href="{{ path('figure_show', { 'id': figure.id }) }}" class="figure-link">
+                        <h2>{{ figure.nom }}</h2>
+                        <p>{{ figure.description|slice(0, 100) ~ '...' }}</p> {# Brief description #}
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
 
-        {% if app.user %}
-            <a href="{{ path('figure_new') }}" class="button">Créer une nouvelle figure</a>
-            <a href="{{ path('app_logout') }}" class="button button-secondary">Déconnexion</a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="button">Connexion</a>
-            <a href="{{ path('app_register') }}" class="button button-secondary">Créer un compte</a>
-        {% endif %}
-    </div>
+        {# Action buttons based on user authentication state #}
+        <div class="action-buttons">
+            {% if app.user %}
+                <a href="{{ path('figure_new') }}" class="button button-primary">Create New Trick</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="button button-secondary">Login to Add Tricks</a>
+            {% endif %}
+        </div>
+    </section>
 {% endblock %}

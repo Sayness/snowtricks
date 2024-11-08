@@ -10,6 +10,23 @@
         <p>{{ figure.description }}</p>
         <p><strong>Catégorie:</strong> {{ figure.categories }}</p>
 
+<h2>Media</h2>
+<div class="media-gallery">
+    {% for media in figure.mediaFiles %}
+        {% if media.type == 'image' %}
+            <img src="{{ asset('/uploads/media/' ~ media.url) }}" alt="Media Image">
+        {% elseif media.type == 'video' %}
+            <video controls>
+                <source src="{{ asset('/uploads/media/' ~ media.url) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% endif %}
+    {% else %}
+        <p>Aucun média trouvé pour cette figure.</p>
+    {% endfor %}
+</div>
+
+
         <h2>Commentaires</h2>
 
         {% for comment in figure.comments %}
@@ -31,6 +48,7 @@
         {% else %}
             <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.</p>
         {% endif %}
+
 
         <a href="{{ path('figure_index') }}" class="button">Retour à la liste des figures</a>
         <a href="{{ path('figure_edit', {'id': figure.id}) }}" class="button">Modifier la Figure</a>

@@ -8,7 +8,7 @@
     <div class="main-content">
         <h1>Créer une Nouvelle Figure</h1>
         
-        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+        {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data'}}) }}
             {{ form_label(form.nom, null, {'label_attr': {'class': 'form__label'}}) }}
             {{ form_widget(form.nom, {'attr': {'class': 'form__input'}}) }}
             
@@ -17,8 +17,96 @@
             
             {{ form_label(form.categories, null, {'label_attr': {'class': 'form__label'}}) }}
             {{ form_widget(form.categories, {'attr': {'class': 'form__input'}}) }}
+
+            {# Champ pour les fichiers média #}
+            {{ form_label(form.media, null, {'label_attr': {'class': 'form__label'}}) }}
+            {{ form_widget(form.media, {'attr': {'class': 'form__input', 'id': 'media-upload', 'multiple': 'multiple'}}) }}
+     
+            {# Zone de prévisualisation des fichiers #}
+            <h2>Médias Sélectionnés</h2>
+            <div id="media-preview" class="media-gallery"></div>
             
             <button type="submit" class="button">Créer</button>
         {{ form_end(form) }}
     </div>
+
+    {# Script JavaScript pour gérer la prévisualisation et la suppression des fichiers #}
+<script defer>
+document.addEventListener('DOMContentLoaded', function() {
+    const mediaUpload = document.getElementById('figure_media');
+    const mediaPreview = document.getElementById('media-preview');
+
+    if (mediaUpload) {
+        mediaUpload.addEventListener('change', function(event) {
+            mediaPreview.innerHTML = ''; // Clear previous previews
+            Array.from(event.target.files).forEach(file => {
+                const mediaItem = document.createElement('div');
+                mediaItem.classList.add('media-item');
+
+                // Prévisualisation de l'image
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.alt = 'Aperçu de l\'image';
+                    img.onload = () => URL.revokeObjectURL(img.src); // Free memory
+                    mediaItem.appendChild(img);
+                } else if (file.type.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.controls = true;
+                    const source = document.createElement('source');
+                    source.src = URL.createObjectURL(file);
+                    source.type = file.type;
+                    video.appendChild(source);
+                    video.onload = () => URL.revokeObjectURL(source.src); // Free memory
+                    mediaItem.appendChild(video);
+                }
+
+                // Bouton de suppression de l'image
+                const removeButton = document.createElement('button');
+                removeButton.innerHTML = '❌';
+                removeButton.classList.add('remove-button');
+                removeButton.addEventListener('click', () => {
+                    mediaItem.remove();
+                });
+
+                mediaItem.appendChild(removeButton);
+                mediaPreview.appendChild(mediaItem);
+            });
+        });
+    }
+});
+</script>
+
+
+    <style>
+        .media-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .media-item {
+            position: relative;
+            margin: 5px;
+            width: 100px;
+            height: 100px;
+        }
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .remove-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 50%;
+            padding: 3px;
+        }
+    </style>
 {% endblock %}

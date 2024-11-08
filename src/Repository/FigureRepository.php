@@ -7,6 +7,8 @@ namespace App\Repository;
 use App\Entity\Figure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\EntityRepository;
 
 class FigureRepository extends ServiceEntityRepository
 {
@@ -22,5 +24,16 @@ class FigureRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush(); 
         }
+    }
+
+    public function findFigureWithMedia($id)
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.mediaFiles', 'm') // Jointure pour charger les médias
+            ->addSelect('m') // Sélectionne les médias pour le chargement
+            ->where('f.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

@@ -29,11 +29,39 @@ class Figure
     #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private Collection $comments;
 
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'figure', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $mediaFiles;
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->mediaFiles = new ArrayCollection();
     }
 
+    public function getMediaFiles(): Collection
+    {
+        return $this->mediaFiles;
+    }
+
+    public function addMediaFile(Media $mediaFile): self
+    {
+        if (!$this->mediaFiles->contains($mediaFile)) {
+            $this->mediaFiles[] = $mediaFile;
+            $mediaFile->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaFile(Media $mediaFile): self
+    {
+        if ($this->mediaFiles->removeElement($mediaFile)) {
+            if ($mediaFile->getFigure() === $this) {
+                $mediaFile->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
     // Autres getters et setters
 
     public function getId(): ?int
