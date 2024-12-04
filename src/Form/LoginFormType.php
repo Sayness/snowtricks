@@ -1,5 +1,5 @@
 <?php
-// src/Form/LoginForm.php
+// src/Form/LoginFormType.php
 
 namespace App\Form;
 
@@ -16,20 +16,28 @@ class LoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('_username', EmailType::class, [
-            'label' => 'Email',
-            'attr' => [
-                'class' => 'form__input',
-                'required' => true,
-            ],
-        ])
-        ->add('_password', PasswordType::class, [
-            'label' => 'Mot de passe',
-            'attr' => [
-                'class' => 'form__input',
-                'required' => true,
-            ],
-        ]);
+            ->add('_username', EmailType::class, [
+                'label' => 'Email',
+                'attr' => [
+                    'class' => 'form-input',
+                    'placeholder' => 'Email',
+                    'required' => true,
+                ],
+                'label_attr' => [
+                    'class' => 'form-label',
+                ],
+            ])
+            ->add('_password', PasswordType::class, [
+                'label' => 'Mot de passe',
+                'attr' => [
+                    'class' => 'form-input',
+                    'placeholder' => 'Mot de passe',
+                    'required' => true,
+                ],
+                'label_attr' => [
+                    'class' => 'form-label',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

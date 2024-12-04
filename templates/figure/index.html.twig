@@ -1,41 +1,58 @@
-{# templates/figure/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Home - SnowTricks{% endblock %}
 
 {% block body %}
-    {# Hero section with background image and phrase accroche #}
+    {# Section d'accueil (Hero) #}
     <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-text">Phrase accroche</h1>
+            <h1 class="hero-text">Découvrez le Monde du Snowboard</h1>
         </div>
-        <a href="#tricks-section" class="scroll-button">&#8595;</a>
+        <a href="#tricks-section" class="scroll-button">↓</a>
     </section>
 
-    {# Tricks section - anchor for the scroll #}
+    {# Section des figures (Tricks) #}
     <section id="tricks-section" class="main-content">
-        <h1>Explore Snowboarding Tricks</h1>
-        
-        {# Displaying list of figures with additional structure for improved layout #}
-        <ul class="figure-list">
+        <ul class="figure-list" id="figure-list">
+            {# Boucle sur les figures disponibles #}
             {% for figure in figures %}
                 <li class="figure-list__item">
-                    <a href="{{ path('figure_show', { 'id': figure.id }) }}" class="figure-link">
-                        <h2>{{ figure.nom }}</h2>
-                        <p>{{ figure.description|slice(0, 100) ~ '...' }}</p> {# Brief description #}
+                    <a href="{{ path('figure_show', {'id': figure.id}) }}" class="figure-link">
+                        {# Affichage de la première image ou d'une image par défaut #}
+                        <img src="{{ figure.mediaFiles|first ? asset('uploads/media/' ~ figure.mediaFiles|first.url) : asset('images/default-trick.jpg') }}" 
+                             alt="{{ figure.nom }}" 
+                             class="figure-image">
+                        <div class="figure-content">
+                            <h2>{{ figure.nom }}</h2>
+                        </div>
+
+                        {# Actions utilisateur (modifier ou supprimer une figure) #}
+                        <div class="figure-actions">
+                            {% if app.user %}
+                                {# Lien pour modifier la figure #}
+                                <a href="{{ path('figure_edit', { id: figure.id }) }}" class="action-button">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+
+                                {# Formulaire pour supprimer la figure avec confirmation #}
+                                <form action="{{ path('figure_delete', { id: figure.id }) }}" method="post" 
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?');" 
+                                      class="delete-form">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-figure-' ~ figure.id) }}">
+                                    <button type="submit" class="action-button delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
                     </a>
                 </li>
             {% endfor %}
         </ul>
 
-        {# Action buttons based on user authentication state #}
-        <div class="action-buttons">
-            {% if app.user %}
-                <a href="{{ path('figure_new') }}" class="button button-primary">Create New Trick</a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="button button-secondary">Login to Add Tricks</a>
-            {% endif %}
-        </div>
+        {# Bouton "Charger plus" si d'autres figures sont disponibles #}
+        {% if hasMoreFigures %}
+            <button id="load-more" data-page="{{ page + 1 }}" class="load-more">Charger plus</button>
+        {% endif %}
     </section>
 {% endblock %}

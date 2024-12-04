@@ -16,6 +16,10 @@ class CommentFormType extends AbstractType
         $builder->add('content', TextareaType::class, [
             'label' => 'Commentaire',
             'required' => true,
+            'attr' => [
+                'class' => 'form__input',
+                'required' => true,
+            ],
         ]);
     }
 

@@ -1,56 +1,98 @@
-{# templates/figure/show.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de la Figure{% endblock %}
+{% block title %}{{ figure.nom }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/media-handler.js') }}"></script>
+{% endblock %}
 
 {% block body %}
-    <div class="main-content">
-        <h1>{{ figure.nom }}</h1>
-        <p>{{ figure.description }}</p>
-        <p><strong>Catégorie:</strong> {{ figure.categories }}</p>
-
-<h2>Media</h2>
-<div class="media-gallery">
-    {% for media in figure.mediaFiles %}
-        {% if media.type == 'image' %}
-            <img src="{{ asset('/uploads/media/' ~ media.url) }}" alt="Media Image">
-        {% elseif media.type == 'video' %}
-            <video controls>
-                <source src="{{ asset('/uploads/media/' ~ media.url) }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        {% endif %}
-    {% else %}
-        <p>Aucun média trouvé pour cette figure.</p>
-    {% endfor %}
+<div class="hero-section">
+    <img src="{{ asset('/uploads/media/' ~ figure.mediaFiles[0].url) }}" alt="{{ figure.nom }}">
+    <div class="hero-overlay">
+        <h1 class="hero-title">{{ figure.nom }}</h1>
+    </div>
+    {% if app.user %}
+        <div class="edit-buttons">
+            <a href="{{ path('figure_edit', {'id': figure.id}) }}" class="edit-button">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+            <form action="{{ path('figure_delete', { id: figure.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-figure-' ~ figure.id) }}">
+                <button type="submit" class="action-button delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </form>
+        </div>
+    {% endif %}
 </div>
 
+<div class="container">
+    {# Description Section #}
+    <div class="description">
+        {{ figure.description }}
+    </div>
 
-        <h2>Commentaires</h2>
-
-        {% for comment in figure.comments %}
-            <div class="comment">
-                <p><strong>{{ comment.author }}</strong> - {{ comment.createdAt|date('d/m/Y H:i') }}</p>
-                <p>{{ comment.content }}</p>
+    {# Media Section with Toggle Button #}
+    <button id="seeMediaBtn" class="see-media-btn responsive-hidden">See Media</button>
+    <div id="mediaList" class="media-gallery hidden">
+        {% for media in figure.mediaFiles %}
+            <div class="media-item">
+                {% if media.type == 'image' %}
+                    <img src="{{ asset('/uploads/media/' ~ media.url) }}" alt="Media">
+                {% elseif media.type == 'video' %}
+                    <video controls>
+                        <source src="{{ asset('/uploads/media/' ~ media.url) }}" type="video/mp4">
+                    </video>
+                {% endif %}
             </div>
-        {% else %}
-            <p>Il n'y a pas encore de commentaires.</p>
         {% endfor %}
+    </div>
 
-        {# Afficher le formulaire de commentaire seulement si l'utilisateur est connecté #}
+    {# Tags Section #}
+    <div class="tags">
+        <span class="tag">Catégorie : {{ figure.categories }}</span>
+        <span class="tag">Crée le : {{ figure.createdAt|date('d/m/Y H:i') }}</span>
+        {% if figure.updatedAt %}
+            <span class="tag">Modifier le : {{ figure.updatedAt|date('d/m/Y H:i') }}</span> 
+        {% endif %}
+    </div>
+
+    {# Comments Section #}
+    <div class="comments-section">
+        <h2 class="section-title">Commentaires</h2>
+        
         {% if app.user %}
-            <h2>Ajouter un commentaire</h2>
-            {{ form_start(commentForm) }}
-                {{ form_row(commentForm.content) }} {# On affiche uniquement le champ de contenu #}
-                <button class="btn">Envoyer</button>
+            {{ form_start(commentForm, {'attr': {'class': 'comment-form'}}) }}
+                <div class="comment-form-container">
+                    {{ form_widget(commentForm.content, {
+                        'attr': {
+                            'class': 'comment-input',
+                            'placeholder': 'Laissez un commentaire...'
+                        }
+                    }) }}
+                    <button type="submit" class="submit-button">
+                        Envoyer
+                    </button>
+                </div>
             {{ form_end(commentForm) }}
-        {% else %}
-            <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.</p>
         {% endif %}
 
-
-        <a href="{{ path('figure_index') }}" class="button">Retour à la liste des figures</a>
-        <a href="{{ path('figure_edit', {'id': figure.id}) }}" class="button">Modifier la Figure</a>
+        <div class="comments-list">
+            {% for comment in figure.comments %}
+                <div class="comment">
+                    <div class="avatar"></div>
+                    <div class="comment-content">
+                        <div class="comment-author">{{ comment.author }}</div>
+                        <div class="comment-text">{{ comment.content }}</div>
+                        <div class="comment-date">{{ comment.createdAt|date('d/m/Y H:i') }}</div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="no-comments">Aucun commentaire pour le moment.</p>
+            {% endfor %}
+        </div>
     </div>
+</div>
 {% endblock %}

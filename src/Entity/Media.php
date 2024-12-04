@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MediaRepository;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
@@ -59,6 +60,22 @@ class Media
     {
         $this->figure = $figure;
 
+        return $this;
+    }
+    
+        /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $alt;
+
+    public function getAlt(): ?string
+    {
+        return $this->alt;
+    }
+
+    public function setAlt(?string $alt): self
+    {
+        $this->alt = $alt;
         return $this;
     }
 }

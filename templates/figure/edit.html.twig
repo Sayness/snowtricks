@@ -1,18 +1,86 @@
-{# templates/figure/edit.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier la Figure{% endblock %}
+{% block title %}Modifier {{ figure.nom }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/media-handler.js') }}"></script>
+{% endblock %}
 
 {% block body %}
-    <div class="edit-container">
-        <h1>Modifier la Figure : {{ figure.nom }}</h1>
-        
-        {{ form_start(form, {'attr': {'class': 'form'}}) }}
-            {{ form_widget(form) }}
-            <button type="submit" class="button">Modifier</button>
-        {{ form_end(form) }}
+    {# Section principale avec le titre de la figure #}
+    <div class="hero-section">
+        <img src="{{ asset('/uploads/media/' ~ figure.mediaFiles[0].url) }}" alt="{{ figure.nom }}">
+        <div class="hero-overlay">
+            <h1 class="hero-title">{{ figure.nom }}</h1>
+        </div>
+    </div>
 
-        <a href="{{ path('figure_index') }}" class="button button-secondary">Retour à la liste des figures</a>
+    <div class="container">
+        {# Galerie des médias existants #}
+        <div class="media-gallery" id="existing-media">
+            {% for media in figure.mediaFiles %}
+                <div class="media-item" data-media-id="{{ media.id }}">
+                    {% if media.type == 'image' %}
+                        <img src="{{ asset('/uploads/media/' ~ media.url) }}" alt="Media">
+                    {% else %}
+                        <video controls>
+                            <source src="{{ asset('/uploads/media/' ~ media.url) }}" type="video/mp4">
+                        </video>
+                    {% endif %}
+                    <div class="media-actions">
+                        <label class="action-button edit">
+                            <i class="fas fa-pencil-alt"></i>
+                            <input type="file" class="hidden media-replace" accept="image/*,video/*">
+                        </label>
+                        <button class="action-button delete" data-media-id="{{ media.id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# Formulaire d'édition de la figure #}
+        {{ form_start(form, {'attr': {'class': 'edit-form', 'id': 'figure-form'}}) }}
+            {# Nom de la figure #}
+            <div class="form-group">
+                {{ form_label(form.nom, 'Nom de la figure', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-input'}}) }}
+                {{ form_errors(form.nom) }}
+            </div>
+
+            {# Description de la figure #}
+            <div class="form-group">
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-textarea'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            {# Groupe ou catégorie de la figure #}
+            <div class="form-group">
+                {{ form_label(form.categories, 'Groupe', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.categories, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.categories) }}
+            </div>
+
+            {# Upload de nouveaux médias #}
+            <div class="form-group">
+                {{ form_label(form.media, 'Ajouter des médias', {'label_attr': {'class': 'form__label'}}) }}
+                {{ form_widget(form.media, {'attr': {'class': 'form__input', 'id': 'media-upload', 'multiple': 'multiple'}}) }}
+            </div>
+
+            {# Prévisualisation des fichiers sélectionnés #}
+            <h2>Médias Sélectionnés</h2>
+            <div id="media-preview" class="media-gallery"></div>
+
+            {# Input caché pour suivre les médias supprimés #}
+            <input type="hidden" name="deleted_media" id="deleted-media" value="">
+
+            {# Bouton pour sauvegarder les modifications #}
+            <div class="form-actions">
+                <button type="submit" class="button save">Enregistrer</button>
+            </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

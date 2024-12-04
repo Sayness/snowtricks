@@ -18,16 +18,24 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => [
-                    'class' => 'form__input',
+                    'class' => 'form-input',
+                    'placeholder' => 'Email',
                     'required' => true,
+                ],
+                'label_attr' => [
+                    'class' => 'form-label',
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'mapped' => false, 
+                'mapped' => false,
                 'attr' => [
-                    'class' => 'form__input',
+                    'class' => 'form-input',
+                    'placeholder' => 'Mot de passe',
                     'required' => true,
+                ],
+                'label_attr' => [
+                    'class' => 'form-label',
                 ],
             ]);
     }
