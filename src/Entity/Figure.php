@@ -8,8 +8,11 @@ use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Cocur\Slugify\Slugify;
 
 #[ORM\Entity(repositoryClass: FigureRepository::class)]
+#[UniqueEntity(fields: ['nom'], message: 'Ce nom de figure existe déjà.')]
 class Figure
 {
     #[ORM\Id]
@@ -17,7 +20,8 @@ class Figure
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'Le nom de la figure est obligatoire.')]
     private ?string $nom = null;
 
     #[ORM\Column(type: "text", nullable: true)]
@@ -38,6 +42,8 @@ class Figure
     #[ORM\Column(type: "datetime", nullable: true)]
     private ?\DateTime $updatedAt = null;
 
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -140,6 +146,19 @@ class Figure
         return $this;
     }
     
+    public function generateSlug(): void
+    {
+        $slugify = new Slugify();
+        $this->slug = $slugify->slugify($this->nom);
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTime();
@@ -153,5 +172,16 @@ class Figure
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
     }
 }

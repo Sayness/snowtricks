@@ -17,7 +17,7 @@
             {# Boucle sur les figures disponibles #}
             {% for figure in figures %}
                 <li class="figure-list__item">
-                    <a href="{{ path('figure_show', {'id': figure.id}) }}" class="figure-link">
+                    <a href="{{ path('figure_show', {'slug': figure.slug}) }}" class="figure-link">
                         {# Affichage de la première image ou d'une image par défaut #}
                         <img src="{{ figure.mediaFiles|first ? asset('uploads/media/' ~ figure.mediaFiles|first.url) : asset('images/default-trick.jpg') }}" 
                              alt="{{ figure.nom }}" 
@@ -30,12 +30,12 @@
                         <div class="figure-actions">
                             {% if app.user %}
                                 {# Lien pour modifier la figure #}
-                                <a href="{{ path('figure_edit', { id: figure.id }) }}" class="action-button">
+                                <a href="{{ path('figure_edit', { slug: figure.slug }) }}" class="action-button">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
 
                                 {# Formulaire pour supprimer la figure avec confirmation #}
-                                <form action="{{ path('figure_delete', { id: figure.id }) }}" method="post" 
+                                <form action="{{ path('figure_delete', { slug: figure.slug }) }}" method="post" 
                                       onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?');" 
                                       class="delete-form">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete-figure-' ~ figure.id) }}">

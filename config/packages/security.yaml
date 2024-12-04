@@ -35,3 +35,4 @@ security:
     access_control:
         - { path: ^/figure/.*/edit, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/figure/new, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/figure/.*/delete, roles: IS_AUTHENTICATED_FULLY }

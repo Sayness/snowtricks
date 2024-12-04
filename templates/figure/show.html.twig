@@ -15,27 +15,27 @@
     </div>
     {% if app.user %}
         <div class="edit-buttons">
-            <a href="{{ path('figure_edit', {'id': figure.id}) }}" class="edit-button">
+            <a href="{{ path('figure_edit', {'slug': figure.slug}) }}" class="edit-button">
                 <i class="fas fa-pencil-alt"></i>
             </a>
-            <form action="{{ path('figure_delete', { id: figure.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?');">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete-figure-' ~ figure.id) }}">
+            <form action="{{ path('figure_delete', { slug: figure.slug }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-figure-' ~ figure.slug) }}">
                 <button type="submit" class="action-button delete">
                     <i class="fas fa-trash"></i>
                 </button>
             </form>
+ 
         </div>
     {% endif %}
 </div>
 
 <div class="container">
-    {# Description Section #}
+
     <div class="description">
         {{ figure.description }}
     </div>
 
-    {# Media Section with Toggle Button #}
-    <button id="seeMediaBtn" class="see-media-btn responsive-hidden">See Media</button>
+    <button id="seeMediaBtn" class="see-media-btn responsive-hidden">Afficher les Médias</button>
     <div id="mediaList" class="media-gallery hidden">
         {% for media in figure.mediaFiles %}
             <div class="media-item">
@@ -50,7 +50,6 @@
         {% endfor %}
     </div>
 
-    {# Tags Section #}
     <div class="tags">
         <span class="tag">Catégorie : {{ figure.categories }}</span>
         <span class="tag">Crée le : {{ figure.createdAt|date('d/m/Y H:i') }}</span>
@@ -59,7 +58,6 @@
         {% endif %}
     </div>
 
-    {# Comments Section #}
     <div class="comments-section">
         <h2 class="section-title">Commentaires</h2>
         
@@ -80,9 +78,11 @@
         {% endif %}
 
         <div class="comments-list">
-            {% for comment in figure.comments %}
+            {% for comment in comments %}
                 <div class="comment">
-                    <div class="avatar"></div>
+                    <div class="avatar">
+                        <img src="{{ asset('images/default-avatar.jpg') }}" alt="Avatar de {{ comment.author }}">
+                    </div>
                     <div class="comment-content">
                         <div class="comment-author">{{ comment.author }}</div>
                         <div class="comment-text">{{ comment.content }}</div>
@@ -93,6 +93,18 @@
                 <p class="no-comments">Aucun commentaire pour le moment.</p>
             {% endfor %}
         </div>
+<div class="pagination">
+    {% if currentPage > 1 %}
+        <a href="{{ path('figure_show', {'slug': figure.slug, 'page': currentPage - 1}) }}" class="pagination-prev">
+            Précédent
+        </a>
+    {% endif %}
+    {% if totalComments > currentPage * 3 %}
+        <a href="{{ path('figure_show', {'slug': figure.slug, 'page': currentPage + 1}) }}" class="pagination-next">
+            Suivant
+        </a>
+    {% endif %}
+</div>
     </div>
 </div>
 {% endblock %}

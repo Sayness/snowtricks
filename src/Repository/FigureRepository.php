@@ -26,13 +26,13 @@ class FigureRepository extends ServiceEntityRepository
         }
     }
 
-    public function findFigureWithMedia($id)
+    public function findFigureWithMedia($slug): ?Figure
     {
         return $this->createQueryBuilder('f')
-            ->leftJoin('f.mediaFiles', 'm') // Jointure pour charger les médias
-            ->addSelect('m') // Sélectionne les médias pour le chargement
-            ->where('f.id = :id')
-            ->setParameter('id', $id)
+            ->leftJoin('f.mediaFiles', 'm') 
+            ->addSelect('m') 
+            ->where('f.slug = :slug') 
+            ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult();
     }

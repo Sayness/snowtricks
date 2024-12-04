@@ -9,12 +9,16 @@
 
 {% block body %}
     {# Section principale avec le titre de la figure #}
-    <div class="hero-section">
+<div class="hero-section">
+    {% if figure.mediaFiles|length > 0 %}
         <img src="{{ asset('/uploads/media/' ~ figure.mediaFiles[0].url) }}" alt="{{ figure.nom }}">
-        <div class="hero-overlay">
-            <h1 class="hero-title">{{ figure.nom }}</h1>
-        </div>
+    {% else %}
+        <img src="{{ asset('images/default-placeholder.png') }}" alt="Image par défaut">
+    {% endif %}
+    <div class="hero-overlay">
+        <h1 class="hero-title">{{ figure.nom }}</h1>
     </div>
+</div>
 
     <div class="container">
         {# Galerie des médias existants #}

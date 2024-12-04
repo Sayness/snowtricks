@@ -1,42 +1,46 @@
-{# templates/figure/new.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Créer une Nouvelle Figure{% endblock %}
 
 {% block body %}
-    <div class="main-content">
-        <h1>Créer une Nouvelle Figure</h1>
-        
-        {# Formulaire de création de figure #}
-        {{ form_start(form, {'attr': {'class': 'form', 'enctype': 'multipart/form-data'}}) }}
-
-            {# Champ pour le nom de la figure #}
-            {{ form_label(form.nom, 'Nom de la figure', {'label_attr': {'class': 'form__label'}}) }}
-            {{ form_widget(form.nom, {'attr': {'class': 'form__input'}}) }}
-            {{ form_errors(form.nom) }}
-
-            {# Champ pour la description de la figure #}
-            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form__label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form__textarea'}}) }}
-            {{ form_errors(form.description) }}
-
-            {# Champ pour sélectionner la catégorie de la figure #}
-            {{ form_label(form.categories, 'Catégorie', {'label_attr': {'class': 'form__label'}}) }}
-            {{ form_widget(form.categories, {'attr': {'class': 'form__input'}}) }}
-            {{ form_errors(form.categories) }}
-
-            {# Champ pour ajouter des médias (images ou vidéos) #}
-            {{ form_label(form.media, 'Médias', {'label_attr': {'class': 'form__label'}}) }}
-            {{ form_widget(form.media, {'attr': {'class': 'form__input', 'id': 'media-upload', 'multiple': 'multiple'}}) }}
-            {{ form_errors(form.media) }}
-     
-            {# Zone de prévisualisation des fichiers sélectionnés #}
-            <h2>Médias Sélectionnés</h2>
-            <div id="media-preview" class="media-gallery"></div>
+    <div class="figure-wrapper">
+        <div class="figure-container">
+            <h1 class="figure-title">Créer une Nouvelle Figure</h1>
             
-            {# Bouton de soumission du formulaire #}
-            <button type="submit" class="button">Créer</button>
-        {{ form_end(form) }}
+            {{ form_start(form, {'attr': {'class': 'figure-form', 'enctype': 'multipart/form-data'}}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.nom, 'Nom de la figure', {'label_attr': {'class': 'figure-label'}}) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'figure-input'}}) }}
+                    {{ form_errors(form.nom) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'figure-label'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'figure-textarea'}}) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.categories, 'Catégorie', {'label_attr': {'class': 'figure-label'}}) }}
+                    {{ form_widget(form.categories, {'attr': {'class': 'figure-select'}}) }}
+                    {{ form_errors(form.categories) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.media, 'Médias', {'label_attr': {'class': 'figure-label'}}) }}
+                    {{ form_widget(form.media, {'attr': {'class': 'figure-input', 'id': 'media-upload', 'multiple': 'multiple'}}) }}
+                    {{ form_errors(form.media) }}
+                </div>
+
+                <div class="media-preview">
+                    <h2>Médias Sélectionnés</h2>
+                    <div id="media-preview" class="media-gallery"></div>
+                </div>
+
+                <button type="submit" class="figure-button">Créer</button>
+
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}
